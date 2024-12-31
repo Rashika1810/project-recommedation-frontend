@@ -5,7 +5,7 @@ export interface LayoutProps {
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   return (
-    <div className="flex flex-col min-h-screen bg-gray-50">
+    <div className="flex flex-col min-h-screen bg-violet-50">
       {/* Main Content Area */}
       <div className="p-4">
         {/* Main Page Content */}

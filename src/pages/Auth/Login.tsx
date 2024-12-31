@@ -7,25 +7,60 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "../components/ui/card";
-import { Input } from "../components/ui/input";
-import { Label } from "../components/ui/label";
-import { Button } from "../components/ui/button";
+} from "../../Components/components/ui/card";
+import { Input } from "../../Components/components/ui/input";
+import { Label } from "../../Components/components/ui/label";
+import { Button } from "../../Components/components/ui/button";
 import { PiEyeBold, PiEyeClosedBold } from "react-icons/pi";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../store/authContext"; // Import auth context
 
 export function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
-  const { loginUser } = useAuth();
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
   const togglePasswordVisibility = () => {
     setShowPassword((prev) => !prev);
   };
   const navigate = useNavigate();
-  const handleLogin = () => {
-    // Your login logic (e.g., validate credentials)
-    loginUser(); // Set the user as logged in
-    navigate("/home"); // Redirect to the home page after login
+
+  const handleLogin = async () => {
+    const payload = {
+      username: username,
+      password: password,
+    };
+
+    try {
+      const response = await fetch(
+        "https://project-rec-backend.vercel.app/api/login/",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(payload),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Login failed");
+      }
+
+      const data = await response.json();
+      console.log("Registration successful:", data);
+
+      // Store the token in localStorage
+      localStorage.setItem("Token", data.Token);
+
+      // Check if token exists, then navigate
+      const token = localStorage.getItem("Token");
+      if (token) {
+        navigate("/home");
+      } else {
+        console.error("Token not found!");
+      }
+    } catch (error) {
+      console.error("Error during login:", error);
+    }
   };
 
   return (
@@ -35,18 +70,20 @@ export function LoginForm() {
           Login
         </CardTitle>
         <CardDescription>
-          Enter your email and password to log in.
+          Enter your username and password to log in.
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">
         <div className="space-y-2">
-          <Label htmlFor="email" className="text-gray-600">
-            Email*
+          <Label htmlFor="username" className="text-gray-600">
+            Username*
           </Label>
           <Input
-            id="email"
-            type="email"
-            placeholder="Enter your email"
+            id="username"
+            type="text"
+            placeholder="Enter your username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
             className="outline outline-violet-200 border-violet-200 focus:outline-violet-200 focus:outline focus:ring-violet-200 focus:border-violet-200 placeholder:text-gray-400"
           />
         </div>
@@ -58,6 +95,8 @@ export function LoginForm() {
             id="password"
             type={showPassword ? "text" : "password"}
             placeholder="Enter your password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
             className="outline outline-violet-200 border-violet-200 focus:outline-violet-200 focus:outline focus:ring-violet-200 focus:border-violet-200 placeholder:text-gray-400"
           />
           <span
@@ -67,17 +106,17 @@ export function LoginForm() {
             {showPassword ? (
               <PiEyeClosedBold
                 size={20}
-                className="text-violet-800 font-semibold"
+                className="text-violet-600 font-semibold"
               />
             ) : (
-              <PiEyeBold size={20} className="text-violet-800 font-semibold" />
+              <PiEyeBold size={20} className="text-violet-600 font-semibold" />
             )}
           </span>
         </div>
       </CardContent>
       <CardFooter className="flex justify-center">
         <Button
-          className="w-2/3 bg-violet-400 text-white font-medium text-base active:bg-violet-500 hover:bg-violet-400"
+          className="w-2/3 bg-violet-600 py-3 text-white font-medium text-base active:bg-violet-500 hover:bg-violet-400"
           onClick={handleLogin}
         >
           Login

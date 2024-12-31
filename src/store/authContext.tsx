@@ -1,10 +1,14 @@
-import React, { createContext, useState, useContext, ReactNode } from "react";
+import {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  ReactNode,
+} from "react";
 
 interface AuthContextType {
-  isRegistered: boolean;
-  isLoggedIn: boolean;
-  registerUser: () => void;
-  loginUser: () => void;
+  isAuthenticated: boolean;
+  logout: () => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -22,23 +26,21 @@ interface AuthProviderProps {
 }
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
-  const [isRegistered, setIsRegistered] = useState<boolean>(false);
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
 
-  const registerUser = () => {
-    setIsRegistered(true); // Mark user as registered
-    setIsLoggedIn(true);
-  };
+  useEffect(() => {
+    const token = localStorage.getItem("Token");
+    setIsAuthenticated(!!token);
+  }, []);
 
-  const loginUser = () => {
-    setIsRegistered(true);
-    setIsLoggedIn(true); // Mark user as logged in
+  // Log out function
+  const logout = () => {
+    localStorage.removeItem("Token");
+    setIsAuthenticated(false);
   };
 
   return (
-    <AuthContext.Provider
-      value={{ isRegistered, isLoggedIn, registerUser, loginUser }}
-    >
+    <AuthContext.Provider value={{ isAuthenticated, logout }}>
       {children}
     </AuthContext.Provider>
   );
