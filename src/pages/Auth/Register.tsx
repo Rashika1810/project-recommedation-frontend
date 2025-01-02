@@ -15,6 +15,7 @@ import { useNavigate } from "react-router-dom";
 
 export function RegisterForm() {
   const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false); // Loading state
   const [formData, setFormData] = useState({
     username: "",
     email: "",
@@ -35,6 +36,7 @@ export function RegisterForm() {
   };
 
   const handleRegister = async () => {
+    setIsLoading(true); // Start loading
     try {
       const formDataObj = new FormData();
       formDataObj.append("username", formData.username);
@@ -57,18 +59,12 @@ export function RegisterForm() {
 
       const data = await response.json();
       console.log("Registration successful:", data);
-
+      navigate("/complete-profile");
       localStorage.setItem("Token", data.Token);
-
-      // Check if token exists, then navigate
-      const token = localStorage.getItem("Token");
-      if (token) {
-        navigate("/complete-profile");
-      } else {
-        console.error("Token not found!");
-      }
     } catch (error) {
       console.error("Error during registration:", error);
+    } finally {
+      setIsLoading(false); // Stop loading
     }
   };
 
@@ -76,7 +72,7 @@ export function RegisterForm() {
     <Card>
       <CardHeader>
         <CardTitle className="text-2xl font-medium text-gray-800">
-          Register
+          REGISTER
         </CardTitle>
         <CardDescription>
           Create an account by filling in the details below.
@@ -92,7 +88,7 @@ export function RegisterForm() {
             placeholder="Enter your username"
             value={formData.username}
             onChange={handleInputChange}
-            className="outline outline-violet-200 border-violet-200 focus:outline-violet-200 focus:ring-violet-200 placeholder:text-gray-400"
+            className="outline outline-purple-200 border-purple-200 focus:outline-purple-200 focus:ring-purple-200 placeholder:text-gray-400"
           />
         </div>
         <div className="space-y-2">
@@ -104,7 +100,7 @@ export function RegisterForm() {
             placeholder="Enter your first name"
             value={formData.first_name}
             onChange={handleInputChange}
-            className="outline outline-violet-200 border-violet-200 focus:outline-violet-200 focus:ring-violet-200 placeholder:text-gray-400"
+            className="outline outline-purple-200 border-purple-200 focus:outline-purple-200 focus:ring-purple-200 placeholder:text-gray-400"
           />
         </div>
         <div className="space-y-2">
@@ -116,7 +112,7 @@ export function RegisterForm() {
             placeholder="Enter your last name"
             value={formData.last_name}
             onChange={handleInputChange}
-            className="outline outline-violet-200 border-violet-200 focus:outline-violet-200 focus:ring-violet-200 placeholder:text-gray-400"
+            className="outline outline-purple-200 border-purple-200 focus:outline-purple-200 focus:ring-purple-200 placeholder:text-gray-400"
           />
         </div>
         <div className="space-y-2">
@@ -129,7 +125,7 @@ export function RegisterForm() {
             placeholder="Enter your email"
             value={formData.email}
             onChange={handleInputChange}
-            className="outline outline-violet-200 border-violet-200 focus:outline-violet-200 focus:ring-violet-200 placeholder:text-gray-400"
+            className="outline outline-purple-200 border-purple-200 focus:outline-purple-200 focus:ring-purple-200 placeholder:text-gray-400"
           />
         </div>
         <div className="space-y-2 relative">
@@ -142,7 +138,7 @@ export function RegisterForm() {
             placeholder="Create a password"
             value={formData.password}
             onChange={handleInputChange}
-            className="outline outline-violet-200 border-violet-200 focus:outline-violet-200 focus:ring-violet-200 placeholder:text-gray-400"
+            className="outline outline-purple-200 border-purple-200 focus:outline-purple-200 focus:ring-purple-200 placeholder:text-gray-400"
           />
           <span
             className="absolute right-3 top-8 cursor-pointer"
@@ -151,20 +147,21 @@ export function RegisterForm() {
             {showPassword ? (
               <PiEyeClosedBold
                 size={20}
-                className="text-violet-600 font-semibold"
+                className="text-purple-600 font-semibold"
               />
             ) : (
-              <PiEyeBold size={20} className="text-violet-600 font-semibold" />
+              <PiEyeBold size={20} className="text-purple-600 font-semibold" />
             )}
           </span>
         </div>
       </CardContent>
       <CardFooter className="flex justify-center">
         <Button
-          className="w-2/3 bg-violet-600 py-3 text-white font-medium text-base active:bg-violet-500 hover:bg-violet-400"
+          className="w-2/3 bg-purple-400 py-3 text-white font-medium text-base active:bg-purple-500 hover:bg-purple-400"
           onClick={handleRegister}
+          disabled={isLoading} // Disable button while loading
         >
-          Register
+          {isLoading ? "Registering..." : "Register"} {/* Button text */}
         </Button>
       </CardFooter>
     </Card>

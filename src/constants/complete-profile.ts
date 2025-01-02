@@ -26,4 +26,20 @@ export interface Option {
     { value: "django", label: "Django" },
     { value: "flask", label: "Flask" },
   ];
-  
+  export const interestedDomains :Option[]= [
+    { value: "healthcare", label: "Healthcare" },
+    { value: "education", label: "Education" },
+    { value: "farming", label: "Farming" },
+    { value: "technology", label: "Technology" },
+    { value: "environment", label: "Environment" },
+    { value: "finance", label: "Finance" },
+  ];
+  export const cloudAndDatabases = [
+    { value: "aws", label: "AWS" },
+    { value: "azure", label: "Azure" },
+    { value: "gcp", label: "Google Cloud Platform" },
+    { value: "mongodb", label: "MongoDB" },
+    { value: "postgresql", label: "PostgreSQL" },
+    { value: "mysql", label: "MySQL" },
+    { value: "firebase", label: "Firebase" },
+  ];

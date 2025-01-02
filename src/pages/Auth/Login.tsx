@@ -1,4 +1,3 @@
-// components/LoginForm.tsx
 import { useState } from "react";
 import {
   Card,
@@ -16,11 +15,14 @@ import { useNavigate } from "react-router-dom";
 
 export function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false); // Loading state
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+
   const togglePasswordVisibility = () => {
     setShowPassword((prev) => !prev);
   };
+
   const navigate = useNavigate();
 
   const handleLogin = async () => {
@@ -28,6 +30,8 @@ export function LoginForm() {
       username: username,
       password: password,
     };
+
+    setIsLoading(true); // Start loading
 
     try {
       const response = await fetch(
@@ -46,20 +50,14 @@ export function LoginForm() {
       }
 
       const data = await response.json();
-      console.log("Registration successful:", data);
-
+      console.log("Login successful:", data);
       // Store the token in localStorage
       localStorage.setItem("Token", data.Token);
-
-      // Check if token exists, then navigate
-      const token = localStorage.getItem("Token");
-      if (token) {
-        navigate("/home");
-      } else {
-        console.error("Token not found!");
-      }
+      navigate("/home");
     } catch (error) {
       console.error("Error during login:", error);
+    } finally {
+      setIsLoading(false); // Stop loading
     }
   };
 
@@ -67,7 +65,7 @@ export function LoginForm() {
     <Card>
       <CardHeader>
         <CardTitle className="text-2xl font-medium text-gray-800">
-          Login
+          LOGIN
         </CardTitle>
         <CardDescription>
           Enter your username and password to log in.
@@ -84,7 +82,7 @@ export function LoginForm() {
             placeholder="Enter your username"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
-            className="outline outline-violet-200 border-violet-200 focus:outline-violet-200 focus:outline focus:ring-violet-200 focus:border-violet-200 placeholder:text-gray-400"
+            className="outline outline-purple-200 border-purple-200 focus:outline-purple-200 focus:outline focus:ring-purple-200 focus:border-purple-200 placeholder:text-gray-400"
           />
         </div>
         <div className="space-y-2 relative">
@@ -97,7 +95,7 @@ export function LoginForm() {
             placeholder="Enter your password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="outline outline-violet-200 border-violet-200 focus:outline-violet-200 focus:outline focus:ring-violet-200 focus:border-violet-200 placeholder:text-gray-400"
+            className="outline outline-purple-200 border-purple-200 focus:outline-purple-200 focus:outline focus:ring-purple-200 focus:border-purple-200 placeholder:text-gray-400"
           />
           <span
             className="absolute right-3 top-8 cursor-pointer"
@@ -106,20 +104,21 @@ export function LoginForm() {
             {showPassword ? (
               <PiEyeClosedBold
                 size={20}
-                className="text-violet-600 font-semibold"
+                className="text-purple-600 font-semibold"
               />
             ) : (
-              <PiEyeBold size={20} className="text-violet-600 font-semibold" />
+              <PiEyeBold size={20} className="text-purple-600 font-semibold" />
             )}
           </span>
         </div>
       </CardContent>
       <CardFooter className="flex justify-center">
         <Button
-          className="w-2/3 bg-violet-600 py-3 text-white font-medium text-base active:bg-violet-500 hover:bg-violet-400"
+          className="w-2/3 bg-purple-400 py-3 text-white font-medium text-base active:bg-purple-500 hover:bg-purple-400"
           onClick={handleLogin}
+          disabled={isLoading} // Disable button while loading
         >
-          Login
+          {isLoading ? "Logging in..." : "Login"} {/* Button text */}
         </Button>
       </CardFooter>
     </Card>

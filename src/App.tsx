@@ -1,56 +1,48 @@
-import {
-  BrowserRouter as Router,
-  Route,
-  Routes,
-  Navigate,
-} from "react-router-dom";
+import { Route, Routes, Navigate } from "react-router-dom";
 import Layout from "./Layout/Layout";
 import { AuthPage } from "./pages/Auth/Auth";
 import CompleteProfilePage from "./pages/Profile/CompleteProfilePage";
-import HomePage from "./pages/Home"; // Your Home page
-import { AuthProvider, useAuth } from "./store/authContext"; // Import auth context
+import HomePage from "./pages/Home";
+import { AuthProvider, useAuth } from "./store/authContext";
 
 function App() {
   return (
     <AuthProvider>
-      <Router>
-        <div className="">
-          <Layout>
-            <Routes>
-              {/* Root path redirects to /auth */}
-              <Route path="/" element={<Navigate to="/auth" replace />} />
+      <div className="">
+        <Layout>
+          <Routes>
+            {/* Root path redirects to /auth */}
+            <Route path="/" element={<Navigate to="/auth" replace />} />
 
-              {/* Auth page route */}
-              <Route path="/auth" element={<AuthPage />} />
+            {/* Auth page route */}
+            <Route path="/auth" element={<AuthPage />} />
 
-              {/* Complete Profile page, only accessible if registered */}
-              <Route
-                path="/complete-profile"
-                element={
-                  <ProtectedRoute>
-                    <CompleteProfilePage />
-                  </ProtectedRoute>
-                }
-              />
+            {/* Complete Profile page, only accessible if registered */}
+            <Route
+              path="/complete-profile"
+              element={
+                <ProtectedRoute>
+                  <CompleteProfilePage />
+                </ProtectedRoute>
+              }
+            />
 
-              {/* Home page, only accessible if logged in */}
-              <Route
-                path="/home"
-                element={
-                  <ProtectedRoute>
-                    <HomePage />
-                  </ProtectedRoute>
-                }
-              />
-            </Routes>
-          </Layout>
-        </div>
-      </Router>
+            {/* Home page, only accessible if logged in */}
+            <Route
+              path="/home"
+              element={
+                <ProtectedRoute>
+                  <HomePage />
+                </ProtectedRoute>
+              }
+            />
+          </Routes>
+        </Layout>
+      </div>
     </AuthProvider>
   );
 }
 
-// ProtectedRoute component to redirect if not authenticated
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const { isAuthenticated } = useAuth();
 
