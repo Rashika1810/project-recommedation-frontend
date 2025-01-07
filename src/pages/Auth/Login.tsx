@@ -12,6 +12,7 @@ import { Label } from "../../Components/components/ui/label";
 import { Button } from "../../Components/components/ui/button";
 import { PiEyeBold, PiEyeClosedBold } from "react-icons/pi";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-hot-toast";
 
 export function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
@@ -46,13 +47,15 @@ export function LoginForm() {
       );
 
       if (!response.ok) {
+        toast.error("Invalid Credential");
         throw new Error("Login failed");
       }
 
       const data = await response.json();
+      toast.success("Logged In Successfully");
       console.log("Login successful:", data);
       // Store the token in localStorage
-      localStorage.setItem("Token", data.Token);
+      localStorage.setItem("Token", data.data.Token);
       navigate("/home");
     } catch (error) {
       console.error("Error during login:", error);

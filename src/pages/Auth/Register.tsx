@@ -12,6 +12,7 @@ import { Label } from "../../Components/components/ui/label";
 import { Button } from "../../Components/components/ui/button";
 import { PiEyeBold, PiEyeClosedBold } from "react-icons/pi";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-hot-toast";
 
 export function RegisterForm() {
   const [showPassword, setShowPassword] = useState(false);
@@ -58,10 +59,16 @@ export function RegisterForm() {
       }
 
       const data = await response.json();
-      console.log("Registration successful:", data);
-      navigate("/complete-profile");
-      localStorage.setItem("Token", data.Token);
+      if (data.success) {
+        toast.success("Registered Successfully!");
+        localStorage.setItem("Token", data.Token);
+        console.log("Registration successful:", data);
+        navigate("/complete-profile");
+      } else {
+        toast.error(data.message);
+      }
     } catch (error) {
+      toast.error("User already exists");
       console.error("Error during registration:", error);
     } finally {
       setIsLoading(false); // Stop loading
@@ -167,3 +174,16 @@ export function RegisterForm() {
     </Card>
   );
 }
+
+/* {
+    "success": true,
+    "message": "Logged In Successfully",
+    "data": {
+        "Token": "301ac7afdd8635b387d023725577b6aa2e6b6a77",
+        "user_details": {
+            "first_name": "user3",
+            "last_name": "",
+            "username": "user3"
+        }
+    }
+} */

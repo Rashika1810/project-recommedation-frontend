@@ -4,40 +4,42 @@ import { AuthPage } from "./pages/Auth/Auth";
 import CompleteProfilePage from "./pages/Profile/CompleteProfilePage";
 import HomePage from "./pages/Home";
 import { AuthProvider, useAuth } from "./store/authContext";
+import { Toaster } from "react-hot-toast";
 
 function App() {
   return (
     <AuthProvider>
       <div className="">
-        <Layout>
-          <Routes>
-            {/* Root path redirects to /auth */}
-            <Route path="/" element={<Navigate to="/auth" replace />} />
+        <Toaster />
+        <Routes>
+          {/* Root path redirects to /auth */}
+          <Route path="/" element={<Navigate to="/auth" replace />} />
 
-            {/* Auth page route */}
-            <Route path="/auth" element={<AuthPage />} />
+          {/* Auth page route */}
+          <Route path="/auth" element={<AuthPage />} />
 
-            {/* Complete Profile page, only accessible if registered */}
-            <Route
-              path="/complete-profile"
-              element={
-                <ProtectedRoute>
+          {/* Layout wrapped routes for authenticated users */}
+          <Route
+            path="/complete-profile"
+            element={
+              <ProtectedRoute>
+                <Layout>
                   <CompleteProfilePage />
-                </ProtectedRoute>
-              }
-            />
-
-            {/* Home page, only accessible if logged in */}
-            <Route
-              path="/home"
-              element={
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/home"
+            element={
+              <Layout>
                 <ProtectedRoute>
                   <HomePage />
                 </ProtectedRoute>
-              }
-            />
-          </Routes>
-        </Layout>
+              </Layout>
+            }
+          />
+        </Routes>
       </div>
     </AuthProvider>
   );

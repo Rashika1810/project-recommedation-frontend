@@ -148,8 +148,8 @@ const CompleteProfilePage = () => {
   };
 
   return (
-    <div className="p-4 sm:p-8 md:p-10 ">
-      <div className="max-w-4xl mx-auto p-6 bg-white shadow-md rounded-lg">
+    <div className="">
+      <div className="max-w-full p-4">
         <h2 className="text-3xl font-medium mb-2 md:mb-2  text-gray-700">
           Complete Your Profile
         </h2>
@@ -306,12 +306,14 @@ const CompleteProfilePage = () => {
             </div>
           </div>
 
-          <Button
-            type="submit"
-            className="w-full bg-blue-500 text-white hover:bg-blue-600"
-          >
-            Submit
-          </Button>
+          <div className="flex justify-center">
+            <Button
+              type="submit"
+              className="w-2/3 bg-purple-400 py-3 text-white font-medium text-base active:bg-purple-500 hover:bg-purple-400"
+            >
+              Submit
+            </Button>
+          </div>
         </form>
       </div>
     </div>
