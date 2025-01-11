@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Input } from "../../Components/components/ui/input";
 import { Textarea } from "../../Components/components/ui/textarea";
 import { Button } from "../../Components/components/ui/button";
@@ -23,7 +23,7 @@ import {
   technologiesFrameworks,
   interestedDomains,
   cloudAndDatabases,
-} from "../../constants/complete-profile"; // Adjust the import path as needed
+} from "../../constants/complete-profile";
 
 type Option = {
   value: string;
@@ -169,6 +169,25 @@ const CompleteProfilePage = () => {
   const fname = localStorage.getItem("fname");
   const lname = localStorage.getItem("lname");
 
+  function clearFields() {
+    setSelectedFields([]);
+    setSelectedDomains([]);
+    setSelectedLanguages([]);
+    setSelectedTechnologies([]);
+    setSelectedCloudDatabases([]);
+    (document.getElementById("branch") as HTMLInputElement).value = "";
+    (document.getElementById("academic-year") as HTMLInputElement).value = "";
+    (
+      document.getElementById("projects-opensource") as HTMLTextAreaElement
+    ).value = "";
+    (
+      document.getElementById("achievements-awards") as HTMLTextAreaElement
+    ).value = "";
+  }
+
+  useEffect(() => {
+    clearFields();
+  }, []);
   const full_name = `${fname} ${lname ? lname : ""}`;
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -187,6 +206,62 @@ const CompleteProfilePage = () => {
     localStorage.removeItem("profileImage");
     setProfileImage(null);
   };
+  const handleSubmit = async (e: React.FormEvent) => {
+    const token = localStorage.getItem("Token");
+    const username = localStorage.getItem("username");
+    e.preventDefault();
+
+    if (!token || !username) {
+      alert("Token or username not found. Please log in.");
+      return;
+    }
+
+    // Prepare the payload
+    const payload = {
+      branch: (document.getElementById("branch") as HTMLInputElement).value,
+      academic_year: (
+        document.getElementById("academic-year") as HTMLInputElement
+      ).value,
+      interest_field: selectedFields.join(", "),
+      interest_domain: selectedDomains.join(", "),
+      programming_language: selectedLanguages.join(", "),
+      frameworks: selectedTechnologies.join(", "),
+      cloud_and_database: selectedCloudDatabases.join(", "),
+      projects: (
+        document.getElementById("projects-opensource") as HTMLTextAreaElement
+      ).value,
+      achievements_and_awards: (
+        document.getElementById("achievements-awards") as HTMLTextAreaElement
+      ).value,
+    };
+
+    try {
+      const response = await fetch(
+        `https://project-rec-backend.vercel.app/api/user_profile/${username}/`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`, // Include the token in the Authorization header
+          },
+          body: JSON.stringify(payload),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(`Error: ${response.statusText}`);
+      }
+
+      const data = await response.json();
+      alert("Profile updated successfully!");
+      console.log("Response Data:", data);
+    } catch (error) {
+      console.error("Error submitting profile:", error);
+      alert(
+        "An error occurred while submitting your profile. Please try again."
+      );
+    }
+  };
 
   return (
     <div className="">
@@ -198,14 +273,13 @@ const CompleteProfilePage = () => {
           Fill your details to have a good experience.
         </p>
 
-        <form>
+        <form onSubmit={handleSubmit}>
           {/* Personal Details Section */}
           <div className="my-6 md:my-10 border-b border-purple-200 pb-6">
             <h3 className="text-xl md:text-2xl font-normal text-gray-700 mb-8">
               Personal Details
             </h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {/* Profile Picture */}
               <div className="space-y-2">
                 <div className="flex items-center my-8 justify-center space-x-4">
                   <div className="relative">
@@ -245,7 +319,6 @@ const CompleteProfilePage = () => {
                 </div>
               </div>
 
-              {/* Other Personal Details */}
               <div className="flex flex-col gap-3">
                 <div className="space-y-2">
                   <label htmlFor="name" className="text-gray-600">
