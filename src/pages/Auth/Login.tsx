@@ -34,34 +34,44 @@ export function LoginForm() {
 
     setIsLoading(true); // Start loading
 
-    try {
-      const response = await fetch(
-        "https://project-rec-backend.vercel.app/api/login/",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(payload),
+    await toast.promise(
+      (async () => {
+        const response = await fetch(
+          "https://project-rec-backend.vercel.app/api/login/",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(payload),
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error("Invalid credentials");
         }
-      );
 
-      if (!response.ok) {
-        toast.error("Invalid Credential");
-        throw new Error("Login failed");
+        const data = await response.json();
+        console.log("Login successful:", data);
+
+        // Store the token in localStorage
+        localStorage.setItem("Token", data.data.Token);
+        localStorage.setItem("username", data.data.Username);
+        localStorage.setItem("fname", data.data.first_name);
+        localStorage.setItem("lname", data.data.last_name);
+
+        if (data.data.Token) {
+          navigate("/home");
+        }
+      })(),
+      {
+        loading: "Logging in...",
+        success: <b>Logged in successfully!</b>,
+        error: <b>Invalid credentials. Please try again.</b>,
       }
+    );
 
-      const data = await response.json();
-      toast.success("Logged In Successfully");
-      console.log("Login successful:", data);
-      // Store the token in localStorage
-      localStorage.setItem("Token", data.data.Token);
-      navigate("/home");
-    } catch (error) {
-      console.error("Error during login:", error);
-    } finally {
-      setIsLoading(false); // Stop loading
-    }
+    setIsLoading(false); // Stop loading
   };
 
   return (
@@ -121,7 +131,7 @@ export function LoginForm() {
           onClick={handleLogin}
           disabled={isLoading} // Disable button while loading
         >
-          {isLoading ? "Logging in..." : "Login"} {/* Button text */}
+          Login {/* Button text */}
         </Button>
       </CardFooter>
     </Card>

@@ -1,4 +1,4 @@
-import logo from "../assets/logo.png";
+import logo from "../assets/new_logo.png";
 import React, { useState } from "react";
 import {
   NavigationMenu,
@@ -8,7 +8,11 @@ import {
 } from "../Components/components/ui/navigation-menu";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "../Components/components/ui/button";
-
+import { PiBookmarkBold } from "react-icons/pi";
+import { PiNotebookFill } from "react-icons/pi";
+import { PiUserFill } from "react-icons/pi";
+import { FaPowerOff } from "react-icons/fa6";
+import { toast } from "react-hot-toast";
 const Navbar: React.FC = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -18,60 +22,92 @@ const Navbar: React.FC = () => {
   };
 
   const handleLogout = () => {
-    // Remove the token from local storage
-    localStorage.removeItem("Token");
-    // Redirect to the login page
-    navigate("/auth");
+    toast(
+      (t) => (
+        <span>
+          Are you sure you want to logout?
+          <div className="flex justify-center gap-5 mt-2">
+            <Button
+              onClick={() => {
+                // Remove the token from local storage
+                localStorage.removeItem("Token");
+                toast.dismiss(t.id); // Dismiss the toast
+                navigate("/auth"); // Redirect to the login page
+              }}
+              className="bg-red-500 hover:bg-red-600 text-white py-1 px-3 rounded"
+            >
+              Yes
+            </Button>
+            <Button
+              onClick={() => toast.dismiss(t.id)} // Dismiss the toast
+              className="bg-gray-300 hover:bg-gray-400 py-1 px-3 rounded"
+            >
+              No
+            </Button>
+          </div>
+        </span>
+      ),
+      {
+        duration: 5000, // Set a timeout for the toast (optional)
+      }
+    );
   };
+
   return (
     <nav className="bg-purple-50 shadow-sm">
-      <div className="mx-auto flex items-center justify-between px-4">
+      <div className="mx-auto flex items-center justify-between px-4 py-2">
         {/* Logo */}
         <Link
           to="/home"
           className="text-2xl font-bold text-gray-800 h-full hover:text-gray-600"
         >
-          <img src={logo} className="h-20" alt="Logo" />
+          <img src={logo} className="h-16" alt="Logo" />
         </Link>
-
         {/* Desktop Navigation Menu */}
         <NavigationMenu className="hidden md:flex">
           <NavigationMenuList className="flex space-x-6">
-            <NavigationMenuItem>
+            {/* Saved Menu Item */}
+            <NavigationMenuItem className="bg-purple-400 border border-purple-400 hover:border-purple-500 shadow-md hover:shadow-lg text-white hover:bg-purple-500 p-1 rounded-md">
               <NavigationMenuLink asChild>
                 <Link
-                  to="/saved"
-                  className="text-xl text-purple-500 hover:text-purple-600 font-medium"
+                  to="#"
+                  className={` flex items-center gap-1 text-xl  font-medium `}
+                  onClick={(e) => e.preventDefault()} // Prevent navigation
                 >
+                  <PiBookmarkBold />
                   Saved
                 </Link>
               </NavigationMenuLink>
             </NavigationMenuItem>
-            <NavigationMenuItem>
+            {/* Courses Menu Item */}
+            <NavigationMenuItem className="bg-purple-400 border border-purple-400 hover:border-purple-500 shadow-md hover:shadow-lg text-white hover:bg-purple-500 p-1 rounded-md">
               <NavigationMenuLink asChild>
                 <Link
-                  to="/complete-profile"
-                  className="text-xl text-purple-500 hover:text-purple-600 font-medium"
+                  to="#"
+                  className={` flex  items-center gap-1 text-xl font-medium `}
+                  onClick={(e) => e.preventDefault()} // Prevent navigation
                 >
-                  Profile
-                </Link>
-              </NavigationMenuLink>
-            </NavigationMenuItem>
-            <NavigationMenuItem>
-              <NavigationMenuLink asChild>
-                <Link
-                  to="/courses"
-                  className="text-xl text-purple-500 hover:text-purple-600 font-medium"
-                >
+                  <PiNotebookFill />
                   Courses
                 </Link>
               </NavigationMenuLink>
             </NavigationMenuItem>
-            <NavigationMenuItem>
-              <Button
-                onClick={handleLogout}
-                className="text-xl text-white bg-red-500 hover:bg-red rounded-md p-2 font-medium"
-              >
+            {/* Profile Menu Item */}
+            <NavigationMenuItem className="bg-purple-400 border border-purple-400 hover:border-purple-500 shadow-md hover:shadow-lg text-white hover:bg-purple-500 p-1 rounded-md">
+              <NavigationMenuLink asChild>
+                <Link
+                  to="/complete-profile"
+                  className={` flex  items-center gap-1 text-xl font-medium `}
+                >
+                  <PiUserFill />
+                  Profile
+                </Link>
+              </NavigationMenuLink>
+            </NavigationMenuItem>
+            {/* Logout Button */}
+            <NavigationMenuItem className="">
+              <Button variant={"destructive"} onClick={handleLogout}>
+                <FaPowerOff />
                 Logout
               </Button>
             </NavigationMenuItem>
@@ -102,46 +138,52 @@ const Navbar: React.FC = () => {
 
       {/* Mobile Navigation Menu */}
       {isMobileMenuOpen && (
-        <NavigationMenu className="md:hidden bg-purple-100 px-4 py-2">
-          <NavigationMenuList className="space-y-4">
-            <NavigationMenuItem>
+        <NavigationMenu className="md:hidden flex absolute top-16 right-0 bg-purple-100 px-4 py-2">
+          <NavigationMenuList className="space-y-4 flex  flex-col ">
+            {/* Saved Menu Item */}
+            <NavigationMenuItem className="bg-purple-400 border border-purple-400 hover:border-purple-500 shadow-md hover:shadow-lg text-white hover:bg-purple-500 p-1 rounded-md">
               <NavigationMenuLink asChild>
                 <Link
-                  to="/saved"
-                  className="block text-lg text-purple-500 hover:text-purple-600 font-medium"
+                  to="#"
+                  className={` flex items-center gap-1 text-xl  font-medium `}
+                  onClick={(e) => e.preventDefault()} // Prevent navigation
                 >
+                  <PiBookmarkBold />
                   Saved
                 </Link>
               </NavigationMenuLink>
             </NavigationMenuItem>
-            <NavigationMenuItem>
+            {/* Courses Menu Item */}
+            <NavigationMenuItem className="bg-purple-400 border border-purple-400 hover:border-purple-500 shadow-md hover:shadow-lg text-white hover:bg-purple-500 p-1 rounded-md">
               <NavigationMenuLink asChild>
                 <Link
-                  to="/profile"
-                  className="block text-lg text-purple-500 hover:text-purple-600 font-medium"
+                  to="#"
+                  className={` flex  items-center gap-1 text-xl font-medium `}
+                  onClick={(e) => e.preventDefault()} // Prevent navigation
                 >
-                  Profile
-                </Link>
-              </NavigationMenuLink>
-            </NavigationMenuItem>
-            <NavigationMenuItem>
-              <NavigationMenuLink asChild>
-                <Link
-                  to="/courses"
-                  className="block text-lg text-purple-500 hover:text-purple-600 font-medium"
-                >
+                  <PiNotebookFill />
                   Courses
                 </Link>
               </NavigationMenuLink>
             </NavigationMenuItem>
-            <div>
-              <Button
-                onClick={handleLogout}
-                className="block text-lg text-white bg-red-500 rounded-md p-2 font-medium"
-              >
+            {/* Profile Menu Item */}
+            <NavigationMenuItem className="bg-purple-400 border border-purple-400 hover:border-purple-500 shadow-md hover:shadow-lg text-white hover:bg-purple-500 p-1 rounded-md">
+              <NavigationMenuLink asChild>
+                <Link
+                  to="/complete-profile"
+                  className={` flex  items-center gap-1 text-xl font-medium `}
+                >
+                  <PiUserFill />
+                  Profile
+                </Link>
+              </NavigationMenuLink>
+            </NavigationMenuItem>
+            <NavigationMenuItem className="">
+              <Button variant={"destructive"} onClick={handleLogout}>
+                <FaPowerOff />
                 Logout
               </Button>
-            </div>
+            </NavigationMenuItem>
           </NavigationMenuList>
         </NavigationMenu>
       )}

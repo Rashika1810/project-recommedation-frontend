@@ -14,7 +14,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       </div>
 
       {/* Scrollable Main Content Area */}
-      <div className="flex-1 overflow-y-scroll pt-20 bg-white">
+      <div className="flex-1 scrollbar-hidden overflow-y-scroll pt-20 bg-white">
         <main className="p-2">{children}</main>
       </div>
     </div>

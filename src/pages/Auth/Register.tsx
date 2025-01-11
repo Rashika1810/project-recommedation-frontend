@@ -61,7 +61,10 @@ export function RegisterForm() {
       const data = await response.json();
       if (data.success) {
         toast.success("Registered Successfully!");
-        localStorage.setItem("Token", data.Token);
+        localStorage.setItem("Token", data.data.Token);
+        localStorage.setItem("username", data.data.username);
+        localStorage.setItem("fname", data.data.first_name);
+        localStorage.setItem("lname", data.data.last_name);
         console.log("Registration successful:", data);
         navigate("/complete-profile");
       } else {
@@ -175,15 +178,14 @@ export function RegisterForm() {
   );
 }
 
-/* {
+/*{
     "success": true,
-    "message": "Logged In Successfully",
+    "message": "User registered successfully.",
     "data": {
-        "Token": "301ac7afdd8635b387d023725577b6aa2e6b6a77",
-        "user_details": {
-            "first_name": "user3",
-            "last_name": "",
-            "username": "user3"
-        }
+        "Token": "ae17dbcf75aa47407198ec6e4a524572214e2a55",
+        "first_name": "Test",
+        "last_name": "",
+        "username": "test_user",
+        "email": "test@gmail.com"
     }
-} */
+}*/

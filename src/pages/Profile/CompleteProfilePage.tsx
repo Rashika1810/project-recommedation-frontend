@@ -44,6 +44,7 @@ const MultiSelectDropdown: React.FC<MultiSelectDropdownProps> = ({
   setSelected,
 }) => {
   const [open, setOpen] = React.useState(false);
+  const [otherValue, setOtherValue] = React.useState("");
 
   const toggleSelection = (value: string) => {
     setSelected((prev) =>
@@ -52,23 +53,29 @@ const MultiSelectDropdown: React.FC<MultiSelectDropdownProps> = ({
         : [...prev, value]
     );
   };
+  const handleOtherInput = () => {
+    if (otherValue.trim()) {
+      setSelected((prev) => [...prev, otherValue.trim()]);
+      setOtherValue("");
+    }
+  };
 
   const displaySelected = () => {
-    if (selected.length > 3) {
-      const displayed = selected
+    const filteredSelected = selected.filter((val) => val !== "Other");
+    if (filteredSelected.length > 3) {
+      const displayed = filteredSelected
         .slice(0, 2)
-        .map((val) => options.find((opt) => opt.value === val)?.label)
+        .map((val) => options.find((opt) => opt.value === val)?.label || val)
         .join(", ");
       return `${displayed}, ...`;
     }
-    return selected
-      .map((val) => options.find((opt) => opt.value === val)?.label)
+    return filteredSelected
+      .map((val) => options.find((opt) => opt.value === val)?.label || val)
       .join(", ");
   };
-
   return (
     <div className="mb-4 w-3/3 space-y-2">
-      <label className="text-gray-600">{label}</label>
+      <label className="text-gray-600">{label} *</label>
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <Button
@@ -104,7 +111,38 @@ const MultiSelectDropdown: React.FC<MultiSelectDropdownProps> = ({
                     />
                   </CommandItem>
                 ))}
+                <CommandItem
+                  key="other"
+                  value="other"
+                  onSelect={() => toggleSelection("Other")}
+                >
+                  Other
+                  <Check
+                    className={cn(
+                      "ml-auto",
+                      selected.includes("Other") ? "opacity-100" : "opacity-0"
+                    )}
+                  />
+                </CommandItem>
               </CommandGroup>
+              {selected.includes("Other") && (
+                <div className="p-4">
+                  <input
+                    type="text"
+                    placeholder="Enter custom value"
+                    value={otherValue}
+                    onChange={(e) => setOtherValue(e.target.value)}
+                    onKeyDown={(e) => e.key === "Enter" && handleOtherInput()}
+                    className="w-full border border-gray-300 p-2 rounded-md"
+                  />
+                  <Button
+                    onClick={handleOtherInput}
+                    className="mt-2 w-full bg-purple-400 text-white"
+                  >
+                    Add
+                  </Button>
+                </div>
+              )}
             </CommandList>
           </Command>
         </PopoverContent>
@@ -128,6 +166,10 @@ const CompleteProfilePage = () => {
   const [profileImage, setProfileImage] = React.useState<string | null>(
     localStorage.getItem("profileImage")
   );
+  const fname = localStorage.getItem("fname");
+  const lname = localStorage.getItem("lname");
+
+  const full_name = `${fname} ${lname ? lname : ""}`;
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -142,7 +184,6 @@ const CompleteProfilePage = () => {
     }
   };
   const handleRemoveProfileImage = () => {
-    // Remove the profile image from both state and localStorage
     localStorage.removeItem("profileImage");
     setProfileImage(null);
   };
@@ -212,6 +253,8 @@ const CompleteProfilePage = () => {
                   </label>
                   <Input
                     id="name"
+                    value={full_name}
+                    disabled
                     placeholder="Enter your name"
                     className="outline outline-purple-200 border-purple-200 focus:outline-purple-200 focus:ring-purple-200 placeholder:text-gray-400"
                   />
@@ -286,7 +329,7 @@ const CompleteProfilePage = () => {
             </h3>
             <div className=" space-y-2 my-6">
               <label htmlFor="projects-opensource" className="text-gray-600">
-                Projects/Open-Source Contributions
+                Projects/Open-Source Contributions *
               </label>
               <Textarea
                 id="projects-opensource"
@@ -296,7 +339,7 @@ const CompleteProfilePage = () => {
             </div>
             <div className=" space-y-2 my-6">
               <label htmlFor="achievements-awards" className="text-gray-600">
-                Achievements and Awards
+                Achievements and Awards *
               </label>
               <Textarea
                 id="achievements-awards"
