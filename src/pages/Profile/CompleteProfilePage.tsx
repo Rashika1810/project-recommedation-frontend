@@ -24,6 +24,7 @@ import {
   interestedDomains,
   cloudAndDatabases,
 } from "../../constants/complete-profile";
+import { toast } from "react-hot-toast";
 
 type Option = {
   value: string;
@@ -162,34 +163,15 @@ const CompleteProfilePage = () => {
   const [selectedDomains, setSelectedDomains] = React.useState<string[]>([]);
   const [selectedCloudDatabases, setSelectedCloudDatabases] = React.useState<
     string[]
-  >([]); // State for cloud and databases
+  >([]);
   const [profileImage, setProfileImage] = React.useState<string | null>(
     localStorage.getItem("profileImage")
   );
+  const [profileSubmitted, setProfileSubmitted] = React.useState(false);
   const fname = localStorage.getItem("fname");
   const lname = localStorage.getItem("lname");
-
-  function clearFields() {
-    setSelectedFields([]);
-    setSelectedDomains([]);
-    setSelectedLanguages([]);
-    setSelectedTechnologies([]);
-    setSelectedCloudDatabases([]);
-    (document.getElementById("branch") as HTMLInputElement).value = "";
-    (document.getElementById("academic-year") as HTMLInputElement).value = "";
-    (
-      document.getElementById("projects-opensource") as HTMLTextAreaElement
-    ).value = "";
-    (
-      document.getElementById("achievements-awards") as HTMLTextAreaElement
-    ).value = "";
-  }
-
-  useEffect(() => {
-    clearFields();
-  }, []);
-  const full_name = `${fname} ${lname ? lname : ""}`;
-
+  const token = localStorage.getItem("Token");
+  const username = localStorage.getItem("username");
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -206,17 +188,72 @@ const CompleteProfilePage = () => {
     localStorage.removeItem("profileImage");
     setProfileImage(null);
   };
+
+  const full_name = `${fname} ${lname ? lname : ""}`;
+
+  const fetchUserData = async (username: string, token: string) => {
+    try {
+      const response = await fetch(
+        `https://project-rec-backend.vercel.app/api/user_profile/${username}/`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      if (!response.ok) {
+        throw new Error("Failed to fetch user data.");
+      }
+      const data = await response.json();
+      if (data.success) {
+        setProfileSubmitted(true);
+      } else {
+        setProfileSubmitted(false);
+      }
+      const userData = data.data;
+
+      setSelectedLanguages(userData?.programming_language?.split(", ") || []);
+      setSelectedTechnologies(userData?.frameworks?.split(", ") || []);
+      setSelectedFields(userData?.interest_field?.split(", ") || []);
+      setSelectedDomains(userData?.interest_domain?.split(", ") || []);
+      setSelectedCloudDatabases(
+        userData?.cloud_and_database?.split(", ") || []
+      );
+
+      // Safely set input fields
+      (document.getElementById("branch") as HTMLInputElement).value =
+        userData?.branch || "";
+      (document.getElementById("academic-year") as HTMLInputElement).value =
+        userData?.academic_year || "";
+      (
+        document.getElementById("projects-opensource") as HTMLTextAreaElement
+      ).value = userData?.projects || "";
+      (
+        document.getElementById("achievements-awards") as HTMLTextAreaElement
+      ).value = userData?.achievements_and_awards || "";
+    } catch (error) {
+      console.error(error);
+      // Reset to empty fields in case of an error
+      setSelectedLanguages([]);
+      setSelectedTechnologies([]);
+      setSelectedFields([]);
+      setSelectedDomains([]);
+      setSelectedCloudDatabases([]);
+    }
+  };
+
+  useEffect(() => {
+    if (token && username) fetchUserData(username, token);
+  }, [token]);
+
   const handleSubmit = async (e: React.FormEvent) => {
-    const token = localStorage.getItem("Token");
-    const username = localStorage.getItem("username");
     e.preventDefault();
 
     if (!token || !username) {
-      alert("Token or username not found. Please log in.");
+      toast.error("Token or username not found. Please log in.");
       return;
     }
 
-    // Prepare the payload
     const payload = {
       branch: (document.getElementById("branch") as HTMLInputElement).value,
       academic_year: (
@@ -236,30 +273,30 @@ const CompleteProfilePage = () => {
     };
 
     try {
+      const method = profileSubmitted ? "PATCH" : "POST";
       const response = await fetch(
         `https://project-rec-backend.vercel.app/api/user_profile/${username}/`,
         {
-          method: "POST",
+          method,
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`, // Include the token in the Authorization header
+            Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify(payload),
         }
       );
 
       if (!response.ok) {
-        throw new Error(`Error: ${response.statusText}`);
+        throw new Error("Error submitting profile.");
       }
+      const responseBody = await response.json();
 
-      const data = await response.json();
-      alert("Profile updated successfully!");
-      console.log("Response Data:", data);
+      toast.success(responseBody.message);
+
+      await fetchUserData(username, token); // Refresh data after submission
     } catch (error) {
       console.error("Error submitting profile:", error);
-      alert(
-        "An error occurred while submitting your profile. Please try again."
-      );
+      alert("An error occurred while submitting your profile.");
     }
   };
 
@@ -274,7 +311,6 @@ const CompleteProfilePage = () => {
         </p>
 
         <form onSubmit={handleSubmit}>
-          {/* Personal Details Section */}
           <div className="my-6 md:my-10 border-b border-purple-200 pb-6">
             <h3 className="text-xl md:text-2xl font-normal text-gray-700 mb-8">
               Personal Details
@@ -427,7 +463,7 @@ const CompleteProfilePage = () => {
               type="submit"
               className="w-2/3 bg-purple-400 py-3 text-white font-medium text-base active:bg-purple-500 hover:bg-purple-400"
             >
-              Submit
+              {profileSubmitted ? "Update Profile" : "Submit"}
             </Button>
           </div>
         </form>

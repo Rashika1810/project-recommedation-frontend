@@ -54,25 +54,36 @@ export function RegisterForm() {
         }
       );
 
+      const responseData = await response.json(); // Parse the response JSON
+
       if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
+        // Check for 404 and other error statuses
+        if (response.status === 404) {
+          toast.error(responseData.message || "Resource not found");
+        } else {
+          toast.error(
+            responseData.message || `HTTP error! Status: ${response.status}`
+          );
+        }
+        return; // Exit the function after showing the error
       }
 
-      const data = await response.json();
-      if (data.success) {
+      // Handle success
+      if (responseData.success) {
         toast.success("Registered Successfully!");
-        localStorage.setItem("Token", data.data.Token);
-        localStorage.setItem("username", data.data.username);
-        localStorage.setItem("fname", data.data.first_name);
-        localStorage.setItem("lname", data.data.last_name);
-        console.log("Registration successful:", data);
+        localStorage.setItem("Token", responseData.data.Token);
+        localStorage.setItem("username", responseData.data.Username);
+        localStorage.setItem("fname", responseData.data.first_name);
+        localStorage.setItem("lname", responseData.data.last_name);
+        console.log("Registration successful:", responseData);
         navigate("/complete-profile");
       } else {
-        toast.error(data.message);
+        toast.error(responseData.message);
       }
     } catch (error) {
-      toast.error("User already exists");
+      // Handle network errors or unexpected issues
       console.error("Error during registration:", error);
+      toast.error("An unexpected error occurred. Please try again.");
     } finally {
       setIsLoading(false); // Stop loading
     }
