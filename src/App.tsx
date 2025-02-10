@@ -7,7 +7,7 @@ import { AuthProvider, useAuth } from "./store/authContext";
 import { Toaster } from "react-hot-toast";
 import Project from "./pages/Project";
 import BookmarksPage from "./pages/Saved";
-import Course from "./pages/Course";
+
 import About from "./pages/About";
 
 function App() {
@@ -69,16 +69,6 @@ function App() {
               <Layout>
                 <ProtectedRoute>
                   <About />
-                </ProtectedRoute>
-              </Layout>
-            }
-          />
-          <Route
-            path="/course"
-            element={
-              <Layout>
-                <ProtectedRoute>
-                  <Course />
                 </ProtectedRoute>
               </Layout>
             }
