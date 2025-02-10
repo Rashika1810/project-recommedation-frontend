@@ -164,30 +164,12 @@ const CompleteProfilePage = () => {
   const [selectedCloudDatabases, setSelectedCloudDatabases] = React.useState<
     string[]
   >([]);
-  const [profileImage, setProfileImage] = React.useState<string | null>(
-    localStorage.getItem("profileImage")
-  );
+
   const [profileSubmitted, setProfileSubmitted] = React.useState(false);
   const fname = localStorage.getItem("fname");
   const lname = localStorage.getItem("lname");
   const token = localStorage.getItem("Token");
   const username = localStorage.getItem("username");
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = () => {
-        const imageData = reader.result as string;
-        localStorage.setItem("profileImage", imageData);
-        setProfileImage(imageData);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-  const handleRemoveProfileImage = () => {
-    localStorage.removeItem("profileImage");
-    setProfileImage(null);
-  };
 
   const full_name = `${fname} ${lname ? lname : ""}`;
 
@@ -316,45 +298,6 @@ const CompleteProfilePage = () => {
               Personal Details
             </h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <div className="flex items-center my-8 justify-center space-x-4">
-                  <div className="relative">
-                    <input
-                      type="file"
-                      accept="image/*"
-                      onChange={handleImageUpload}
-                      className="hidden"
-                      id="profile-upload"
-                    />
-                    <label
-                      htmlFor="profile-upload"
-                      className="w-40 h-40 rounded-full border-dashed border-2 border-purple-400 flex justify-center items-center cursor-pointer text-sm text-gray-600 bg-gray-50"
-                    >
-                      {profileImage ? (
-                        <img
-                          src={profileImage}
-                          alt="Uploaded Profile"
-                          className="w-full h-full rounded-full object-cover"
-                        />
-                      ) : (
-                        <span className="text-purple-700 text-sm">
-                          Upload Profile
-                        </span>
-                      )}
-                    </label>
-                    {profileImage && (
-                      <Button
-                        type="button"
-                        onClick={handleRemoveProfileImage}
-                        className="mt-2 w-full text-sm text-red-500 bg-transparent shadow-none hover:bg-transparent"
-                      >
-                        Remove Profile
-                      </Button>
-                    )}
-                  </div>
-                </div>
-              </div>
-
               <div className="flex flex-col gap-3">
                 <div className="space-y-2">
                   <label htmlFor="name" className="text-gray-600">

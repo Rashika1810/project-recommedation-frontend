@@ -88,12 +88,12 @@ const Navbar: React.FC = () => {
             <NavigationMenuItem className=" shadow-md hover:shadow-lg text-purple-400  p-1 rounded-md">
               <NavigationMenuLink asChild>
                 <Link
-                  to="#"
+                  to="/about"
                   className={` flex  items-center gap-1 text-xl font-medium `}
-                  onClick={(e) => e.preventDefault()} // Prevent navigation
+                  // Prevent navigation
                 >
                   <PiNotebookFill />
-                  Courses
+                  About
                 </Link>
               </NavigationMenuLink>
             </NavigationMenuItem>
@@ -161,12 +161,12 @@ const Navbar: React.FC = () => {
             <NavigationMenuItem className=" shadow-md hover:shadow-lg text-purple-400  p-1 rounded-md">
               <NavigationMenuLink asChild>
                 <Link
-                  to="#"
+                  to="/about"
                   className={` flex  items-center gap-1 text-xl font-medium `}
-                  onClick={(e) => e.preventDefault()} // Prevent navigation
+                  // Prevent navigation
                 >
                   <PiNotebookFill />
-                  Courses
+                  About
                 </Link>
               </NavigationMenuLink>
             </NavigationMenuItem>
