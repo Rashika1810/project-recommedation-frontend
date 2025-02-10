@@ -62,9 +62,7 @@ export default function BookmarksPage() {
 
   return (
     <div className="flex flex-col h-screen p-6">
-      <h1 className="text-2xl font-semibold text-gray-800 mb-6">
-        {`Welcome, ${username ? username : "Guest"}`}
-      </h1>
+      <h4 className="mt-2 mb-5 text-gray-500">Saved Projects...</h4>
       {loading ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {[...Array(6)].map((_, index) => (
