@@ -34,7 +34,7 @@ const Navbar: React.FC = () => {
                 toast.dismiss(t.id); // Dismiss the toast
                 navigate("/auth"); // Redirect to the login page
               }}
-              className="bg-red-500 hover:bg-red-600 text-white py-1 px-3 rounded"
+              className="bg-red-500 hover:bg-red-600 text-purple-400 py-1 px-3 rounded"
             >
               Yes
             </Button>
@@ -67,7 +67,7 @@ const Navbar: React.FC = () => {
         <NavigationMenu className="hidden md:flex">
           <NavigationMenuList className="flex space-x-6">
             {/* Saved Menu Item */}
-            <NavigationMenuItem className="bg-purple-400 border border-purple-400 hover:border-purple-500 shadow-md hover:shadow-lg text-white hover:bg-purple-500 p-1 rounded-md">
+            <NavigationMenuItem className=" shadow-md hover:shadow-lg text-purple-400  p-1 rounded-md">
               <NavigationMenuLink asChild>
                 <Link
                   to="#"
@@ -80,7 +80,7 @@ const Navbar: React.FC = () => {
               </NavigationMenuLink>
             </NavigationMenuItem>
             {/* Courses Menu Item */}
-            <NavigationMenuItem className="bg-purple-400 border border-purple-400 hover:border-purple-500 shadow-md hover:shadow-lg text-white hover:bg-purple-500 p-1 rounded-md">
+            <NavigationMenuItem className=" shadow-md hover:shadow-lg text-purple-400  p-1 rounded-md">
               <NavigationMenuLink asChild>
                 <Link
                   to="#"
@@ -93,7 +93,7 @@ const Navbar: React.FC = () => {
               </NavigationMenuLink>
             </NavigationMenuItem>
             {/* Profile Menu Item */}
-            <NavigationMenuItem className="bg-purple-400 border border-purple-400 hover:border-purple-500 shadow-md hover:shadow-lg text-white hover:bg-purple-500 p-1 rounded-md">
+            <NavigationMenuItem className=" shadow-md hover:shadow-lg text-purple-400  p-1 rounded-md">
               <NavigationMenuLink asChild>
                 <Link
                   to="/complete-profile"
@@ -141,7 +141,7 @@ const Navbar: React.FC = () => {
         <NavigationMenu className="md:hidden flex absolute top-16 right-0 bg-purple-100 px-4 py-2">
           <NavigationMenuList className="space-y-4 flex  flex-col ">
             {/* Saved Menu Item */}
-            <NavigationMenuItem className="bg-purple-400 border border-purple-400 hover:border-purple-500 shadow-md hover:shadow-lg text-white hover:bg-purple-500 p-1 rounded-md">
+            <NavigationMenuItem className=" shadow-md hover:shadow-lg text-purple-400  p-1 rounded-md">
               <NavigationMenuLink asChild>
                 <Link
                   to="#"
@@ -154,7 +154,7 @@ const Navbar: React.FC = () => {
               </NavigationMenuLink>
             </NavigationMenuItem>
             {/* Courses Menu Item */}
-            <NavigationMenuItem className="bg-purple-400 border border-purple-400 hover:border-purple-500 shadow-md hover:shadow-lg text-white hover:bg-purple-500 p-1 rounded-md">
+            <NavigationMenuItem className=" shadow-md hover:shadow-lg text-purple-400  p-1 rounded-md">
               <NavigationMenuLink asChild>
                 <Link
                   to="#"
@@ -167,7 +167,7 @@ const Navbar: React.FC = () => {
               </NavigationMenuLink>
             </NavigationMenuItem>
             {/* Profile Menu Item */}
-            <NavigationMenuItem className="bg-purple-400 border border-purple-400 hover:border-purple-500 shadow-md hover:shadow-lg text-white hover:bg-purple-500 p-1 rounded-md">
+            <NavigationMenuItem className=" shadow-md hover:shadow-lg text-purple-400  p-1 rounded-md">
               <NavigationMenuLink asChild>
                 <Link
                   to="/complete-profile"

@@ -1,8 +1,12 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { Skeleton } from "../Components/components/ui/skeleton";
 
 interface Project {
+  index: number;
   project: string;
   description: string;
+  skills: string;
 }
 
 interface ApiResponse {
@@ -12,6 +16,8 @@ interface ApiResponse {
 const Home: React.FC = () => {
   const username = localStorage.getItem("username");
   const [apiResponse, setApiResponse] = useState<ApiResponse | null>(null);
+  const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (username) {
@@ -36,6 +42,8 @@ const Home: React.FC = () => {
           setApiResponse(parsedData);
         } catch (error) {
           console.error("Error fetching the API response:", error);
+        } finally {
+          setLoading(false);
         }
       };
 
@@ -48,17 +56,39 @@ const Home: React.FC = () => {
       <h1 className="text-2xl font-semibold text-gray-800 mb-6">
         {`Welcome, ${username ? username : "Guest"}`}
       </h1>
-      {apiResponse ? (
+      {loading ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {apiResponse.data.map((project, index) => (
+          {[...Array(6)].map((_, index) => (
             <div
               key={index}
               className="bg-white p-4 rounded-lg shadow-lg border border-gray-200"
             >
+              <Skeleton className="h-6 w-3/4 mb-2" />
+              <Skeleton className="h-4 w-full mb-2" />
+              <Skeleton className="h-4 w-2/3" />
+            </div>
+          ))}
+        </div>
+      ) : apiResponse ? (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {apiResponse.data.map((project, index) => (
+            <div
+              key={index}
+              className="bg-white cursor-pointer p-4 rounded-lg shadow-lg border border-gray-200"
+              onClick={() => navigate(`/project/${project.index}`)}
+            >
               <h3 className="text-lg font-bold text-gray-700">
                 {project.project}
               </h3>
-              <p className="text-gray-600 mt-2">{project.description}</p>
+              <p className="text-gray-600 mt-2">
+                {project.description.length > 100
+                  ? `${project.description.substring(0, 100)}...`
+                  : project.description}
+              </p>
+              <h2>
+                <span className="text-red-500">Id</span>
+                {project.index}
+              </h2>
             </div>
           ))}
         </div>

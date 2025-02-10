@@ -5,6 +5,7 @@ import CompleteProfilePage from "./pages/Profile/CompleteProfilePage";
 import HomePage from "./pages/Home";
 import { AuthProvider, useAuth } from "./store/authContext";
 import { Toaster } from "react-hot-toast";
+import Project from "./pages/Project";
 
 function App() {
   return (
@@ -35,6 +36,16 @@ function App() {
               <Layout>
                 <ProtectedRoute>
                   <HomePage />
+                </ProtectedRoute>
+              </Layout>
+            }
+          />
+          <Route
+            path="/project/:index"
+            element={
+              <Layout>
+                <ProtectedRoute>
+                  <Project />
                 </ProtectedRoute>
               </Layout>
             }
