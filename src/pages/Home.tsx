@@ -85,10 +85,6 @@ const Home: React.FC = () => {
                   ? `${project.description.substring(0, 100)}...`
                   : project.description}
               </p>
-              <h2>
-                <span className="text-red-500">Id</span>
-                {project.index}
-              </h2>
             </div>
           ))}
         </div>

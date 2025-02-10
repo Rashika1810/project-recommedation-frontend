@@ -13,6 +13,7 @@ import { PiNotebookFill } from "react-icons/pi";
 import { PiUserFill } from "react-icons/pi";
 import { FaPowerOff } from "react-icons/fa6";
 import { toast } from "react-hot-toast";
+import bit_logo from "../assets/bit logo.png";
 const Navbar: React.FC = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -34,7 +35,7 @@ const Navbar: React.FC = () => {
                 toast.dismiss(t.id); // Dismiss the toast
                 navigate("/auth"); // Redirect to the login page
               }}
-              className="bg-red-500 hover:bg-red-600 text-purple-400 py-1 px-3 rounded"
+              className="bg-red-500 hover:bg-red-600 text-white py-1 px-3 rounded"
             >
               Yes
             </Button>
@@ -48,7 +49,7 @@ const Navbar: React.FC = () => {
         </span>
       ),
       {
-        duration: 5000, // Set a timeout for the toast (optional)
+        duration: 5000,
       }
     );
   };
@@ -61,7 +62,11 @@ const Navbar: React.FC = () => {
           to="/home"
           className="text-2xl font-bold text-gray-800 h-full hover:text-gray-600"
         >
-          <img src={logo} className="h-16" alt="Logo" />
+          <div className="flex gap-4">
+            {" "}
+            <img src={bit_logo} className="h-16" />
+            <img src={logo} className="h-16" alt="Logo" />
+          </div>
         </Link>
         {/* Desktop Navigation Menu */}
         <NavigationMenu className="hidden md:flex">
@@ -70,9 +75,9 @@ const Navbar: React.FC = () => {
             <NavigationMenuItem className=" shadow-md hover:shadow-lg text-purple-400  p-1 rounded-md">
               <NavigationMenuLink asChild>
                 <Link
-                  to="#"
+                  to="/saved"
                   className={` flex items-center gap-1 text-xl  font-medium `}
-                  onClick={(e) => e.preventDefault()} // Prevent navigation
+                  // Prevent navigation
                 >
                   <PiBookmarkBold />
                   Saved
@@ -144,9 +149,8 @@ const Navbar: React.FC = () => {
             <NavigationMenuItem className=" shadow-md hover:shadow-lg text-purple-400  p-1 rounded-md">
               <NavigationMenuLink asChild>
                 <Link
-                  to="#"
+                  to="/saved"
                   className={` flex items-center gap-1 text-xl  font-medium `}
-                  onClick={(e) => e.preventDefault()} // Prevent navigation
                 >
                   <PiBookmarkBold />
                   Saved

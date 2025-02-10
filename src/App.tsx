@@ -6,6 +6,7 @@ import HomePage from "./pages/Home";
 import { AuthProvider, useAuth } from "./store/authContext";
 import { Toaster } from "react-hot-toast";
 import Project from "./pages/Project";
+import BookmarksPage from "./pages/Saved";
 
 function App() {
   return (
@@ -46,6 +47,16 @@ function App() {
               <Layout>
                 <ProtectedRoute>
                   <Project />
+                </ProtectedRoute>
+              </Layout>
+            }
+          />
+          <Route
+            path="/saved"
+            element={
+              <Layout>
+                <ProtectedRoute>
+                  <BookmarksPage />
                 </ProtectedRoute>
               </Layout>
             }
