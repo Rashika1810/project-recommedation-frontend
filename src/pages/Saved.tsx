@@ -13,7 +13,6 @@ interface Bookmark {
 export default function BookmarksPage() {
   const [bookmarks, setBookmarks] = useState<Bookmark[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
   const username = localStorage.getItem("username");
   const navigate = useNavigate();
 
@@ -28,8 +27,6 @@ export default function BookmarksPage() {
         }
         const data = await response.json();
         setBookmarks(data.data);
-      } catch (err) {
-        setError("Failed to fetch bookmarks");
       } finally {
         setLoading(false);
       }
