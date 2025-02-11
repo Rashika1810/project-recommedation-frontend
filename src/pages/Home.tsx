@@ -169,7 +169,12 @@ const Home: React.FC = () => {
                     </p>
                     <div className="mt-2 flex gap-2 text-gray-500">
                       <p className="font-medium text-gray-600">Skills:</p>
-                      <p> {project.skills}</p>
+                      <p>
+                        {" "}
+                        {project.skills.length > 100
+                          ? `${project.skills.substring(0, 100)}`
+                          : project.skills}
+                      </p>
                     </div>
                   </div>
                 ))
