@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Trash2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Skeleton } from "../Components/components/ui/skeleton";
-
+import bookmark from "../assets/nothing.webp";
 interface Bookmark {
   index: number;
   title: string;
@@ -62,7 +62,6 @@ export default function BookmarksPage() {
 
   return (
     <div className="flex flex-col h-screen p-6">
-      <h4 className="mt-2 mb-5 text-gray-500">Saved Projects...</h4>
       {loading ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {[...Array(6)].map((_, index) => (
@@ -107,7 +106,11 @@ export default function BookmarksPage() {
           ))}
         </div>
       ) : (
-        <p className="text-gray-500">No bookmarks found.</p>
+        <div className="text-gray-500 flex flex-col justify-center items-center">
+          <img src={bookmark} />
+          <p>Nothing Saved....</p>
+          <p>Browse more projects and save the interesting ones</p>
+        </div>
       )}
     </div>
   );
