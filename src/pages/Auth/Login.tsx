@@ -60,9 +60,7 @@ export function LoginForm() {
         localStorage.setItem("fname", data.data.first_name);
         localStorage.setItem("lname", data.data.last_name);
 
-        if (data.data.Token) {
-          navigate("/home");
-        }
+        navigate("/home");
       })(),
       {
         loading: "Logging in...",
