@@ -36,8 +36,10 @@ const About: React.FC = () => {
           </li>
           <li>
             <span className="font-semibold">Learn New Skills:</span> Click on a
-            skill to explore courses recommended by us to improve your
-            knowledge.
+            <b>
+              <i>Get Course</i>
+            </b>{" "}
+            to explore courses recommended by us to improve your knowledge.
           </li>
         </ul>
       </div>

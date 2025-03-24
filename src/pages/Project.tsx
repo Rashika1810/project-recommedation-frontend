@@ -11,6 +11,8 @@ import { BsBookmarksFill, BsFillBookmarkCheckFill } from "react-icons/bs";
 import { useNavigate, useParams } from "react-router-dom";
 import { FaLongArrowAltLeft } from "react-icons/fa";
 import { toast } from "react-hot-toast";
+import CourseModal from "./component/Course";
+import { PiArrowBendUpRightBold } from "react-icons/pi";
 
 type ProjectData = {
   project_name: string;
@@ -23,6 +25,7 @@ const Project: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [showAllSkills, setShowAllSkills] = useState(false);
   const [clicked, setClicked] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -129,12 +132,21 @@ const Project: React.FC = () => {
         >
           <FaLongArrowAltLeft color="gray" /> Back
         </Button>
-        <Button
-          className="bg-purple-400 py-3 text-white font-medium text-base active:bg-purple-500 hover:bg-purple-400"
-          onClick={handleBookmark}
-        >
-          Bookmark {clicked ? <BsFillBookmarkCheckFill /> : <BsBookmarksFill />}
-        </Button>
+        <div className="flex gap-4">
+          <Button
+            className="bg-purple-400 py-3 text-white font-medium text-base active:bg-purple-500 hover:bg-purple-400"
+            onClick={handleBookmark}
+          >
+            Bookmark{" "}
+            {clicked ? <BsFillBookmarkCheckFill /> : <BsBookmarksFill />}
+          </Button>
+          <Button
+            className="bg-gray-400 hover:bg-gray-400"
+            onClick={() => setIsModalOpen(true)}
+          >
+            Get Your Course <PiArrowBendUpRightBold />
+          </Button>
+        </div>
       </div>
 
       <div className="flex flex-col items-center justify-center h-full p-6">
@@ -192,6 +204,8 @@ const Project: React.FC = () => {
           </CardContent>
         </Card>
       </div>
+
+      {isModalOpen && <CourseModal onClose={() => setIsModalOpen(false)} />}
     </div>
   );
 };
