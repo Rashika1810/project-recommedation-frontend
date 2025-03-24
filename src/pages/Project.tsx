@@ -11,7 +11,7 @@ import { BsBookmarksFill, BsFillBookmarkCheckFill } from "react-icons/bs";
 import { useNavigate, useParams } from "react-router-dom";
 import { FaLongArrowAltLeft } from "react-icons/fa";
 import { toast } from "react-hot-toast";
-import CourseModal from "./component/Course";
+import CourseModal from "./component/CourseModal";
 import { PiArrowBendUpRightBold } from "react-icons/pi";
 
 type ProjectData = {

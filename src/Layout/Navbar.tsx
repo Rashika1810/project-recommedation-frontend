@@ -14,6 +14,7 @@ import { PiUserFill } from "react-icons/pi";
 import { FaPowerOff } from "react-icons/fa6";
 import { toast } from "react-hot-toast";
 import bit_logo from "../assets/bit logo.png";
+import { PiBookOpenTextFill } from "react-icons/pi";
 const Navbar: React.FC = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -97,6 +98,18 @@ const Navbar: React.FC = () => {
                 </Link>
               </NavigationMenuLink>
             </NavigationMenuItem>
+            <NavigationMenuItem className=" shadow-md hover:shadow-lg text-purple-400  p-1 rounded-md">
+              <NavigationMenuLink asChild>
+                <Link
+                  to="/course"
+                  className={` flex  items-center gap-1 text-xl font-medium `}
+                  // Prevent navigation
+                >
+                  <PiBookOpenTextFill />
+                  Course
+                </Link>
+              </NavigationMenuLink>
+            </NavigationMenuItem>
             {/* Profile Menu Item */}
             <NavigationMenuItem className=" shadow-md hover:shadow-lg text-purple-400  p-1 rounded-md">
               <NavigationMenuLink asChild>
@@ -167,6 +180,18 @@ const Navbar: React.FC = () => {
                 >
                   <PiNotebookFill />
                   About
+                </Link>
+              </NavigationMenuLink>
+            </NavigationMenuItem>
+            <NavigationMenuItem className=" shadow-md hover:shadow-lg text-purple-400  p-1 rounded-md">
+              <NavigationMenuLink asChild>
+                <Link
+                  to="/course"
+                  className={` flex  items-center gap-1 text-xl font-medium `}
+                  // Prevent navigation
+                >
+                  <PiBookOpenTextFill />
+                  Course
                 </Link>
               </NavigationMenuLink>
             </NavigationMenuItem>

@@ -20,7 +20,7 @@ const CourseModal: React.FC<CourseModalProps> = ({ onClose }) => {
     setLoading(true);
 
     try {
-      const response = await fetch("https://api.example.com/courses", {
+      const response = await fetch("https://127.0.0.1:5000/course_api", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
