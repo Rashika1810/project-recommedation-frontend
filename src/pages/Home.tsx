@@ -28,7 +28,7 @@ const Home: React.FC = () => {
 
       try {
         const response = await fetch(
-          `https://sem-project-ii06.onrender.com/ml_index/${randomIndex}`
+          `http://localhost:5000/ml_index/${randomIndex}`
         );
         if (response.ok) {
           const data = await response.json();
@@ -65,7 +65,7 @@ const Home: React.FC = () => {
       const fetchApiResponse = async () => {
         try {
           const response = await fetch(
-            `https://sem-project-ii06.onrender.com/ml_api/${username}`
+            `http://localhost:5000/ml_api/${username}`
           );
 
           if (!response.ok) {
