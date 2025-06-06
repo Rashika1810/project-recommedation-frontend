@@ -15,6 +15,7 @@ import { FaPowerOff } from "react-icons/fa6";
 import { toast } from "react-hot-toast";
 import bit_logo from "../assets/bit logo.png";
 import { PiBookOpenTextFill } from "react-icons/pi";
+import { PiLinkBold } from "react-icons/pi";
 const Navbar: React.FC = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -86,18 +87,7 @@ const Navbar: React.FC = () => {
               </NavigationMenuLink>
             </NavigationMenuItem>
             {/* Courses Menu Item */}
-            <NavigationMenuItem className=" shadow-md hover:shadow-lg text-purple-400  p-1 rounded-md">
-              <NavigationMenuLink asChild>
-                <Link
-                  to="/about"
-                  className={` flex  items-center gap-1 text-xl font-medium `}
-                  // Prevent navigation
-                >
-                  <PiNotebookFill />
-                  About
-                </Link>
-              </NavigationMenuLink>
-            </NavigationMenuItem>
+
             <NavigationMenuItem className=" shadow-md hover:shadow-lg text-purple-400  p-1 rounded-md">
               <NavigationMenuLink asChild>
                 <Link
@@ -119,6 +109,30 @@ const Navbar: React.FC = () => {
                 >
                   <PiUserFill />
                   Profile
+                </Link>
+              </NavigationMenuLink>
+            </NavigationMenuItem>
+            {/* resume */}
+            <NavigationMenuItem className=" shadow-md hover:shadow-lg text-purple-400  p-1 rounded-md">
+              <NavigationMenuLink asChild>
+                <Link
+                  to="/resume"
+                  className={` flex  items-center gap-1 text-xl font-medium `}
+                >
+                  <PiLinkBold />
+                  Resume
+                </Link>
+              </NavigationMenuLink>
+            </NavigationMenuItem>
+            <NavigationMenuItem className=" shadow-md hover:shadow-lg text-purple-400  p-1 rounded-md">
+              <NavigationMenuLink asChild>
+                <Link
+                  to="/question-generate"
+                  className={` flex  items-center gap-1 text-xl font-medium `}
+                  // Prevent navigation
+                >
+                  <PiNotebookFill />
+                  Question Generator
                 </Link>
               </NavigationMenuLink>
             </NavigationMenuItem>
@@ -174,12 +188,12 @@ const Navbar: React.FC = () => {
             <NavigationMenuItem className=" shadow-md hover:shadow-lg text-purple-400  p-1 rounded-md">
               <NavigationMenuLink asChild>
                 <Link
-                  to="/about"
+                  to="/question-generate"
                   className={` flex  items-center gap-1 text-xl font-medium `}
                   // Prevent navigation
                 >
                   <PiNotebookFill />
-                  About
+                  Question Generator
                 </Link>
               </NavigationMenuLink>
             </NavigationMenuItem>
@@ -204,6 +218,19 @@ const Navbar: React.FC = () => {
                 >
                   <PiUserFill />
                   Profile
+                </Link>
+              </NavigationMenuLink>
+            </NavigationMenuItem>
+            {/* resume
+             */}
+            <NavigationMenuItem className=" shadow-md hover:shadow-lg text-purple-400  p-1 rounded-md">
+              <NavigationMenuLink asChild>
+                <Link
+                  to="/resume"
+                  className={` flex  items-center gap-1 text-xl font-medium `}
+                >
+                  <PiLinkBold />
+                  Resume
                 </Link>
               </NavigationMenuLink>
             </NavigationMenuItem>

@@ -10,6 +10,8 @@ import BookmarksPage from "./pages/Saved";
 
 import About from "./pages/About";
 import Course from "./pages/Course";
+import ResumeForm from "./pages/ResumeForm";
+import ResumeQuestionGenerator from "./pages/ResumeQuestionGenerator";
 
 function App() {
   return (
@@ -22,35 +24,30 @@ function App() {
 
           {/* Auth page route */}
           <Route path="/auth" element={<AuthPage />} />
+          <Route
+            path="/home"
+            element={
+              <Layout>
+                <HomePage />
+              </Layout>
+            }
+          />
 
           {/* Layout wrapped routes for authenticated users */}
           <Route
             path="/complete-profile"
             element={
-              <ProtectedRoute>
-                <Layout>
-                  <CompleteProfilePage />
-                </Layout>
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/home"
-            element={
               <Layout>
-                <ProtectedRoute>
-                  <HomePage />
-                </ProtectedRoute>
+                <CompleteProfilePage />
               </Layout>
             }
           />
+
           <Route
             path="/project/:index"
             element={
               <Layout>
-                <ProtectedRoute>
-                  <Project />
-                </ProtectedRoute>
+                <Project />
               </Layout>
             }
           />
@@ -58,13 +55,11 @@ function App() {
             path="/saved"
             element={
               <Layout>
-                <ProtectedRoute>
-                  <BookmarksPage />
-                </ProtectedRoute>
+                <BookmarksPage />
               </Layout>
             }
           />
-          <Route
+          {/* <Route
             path="/about"
             element={
               <Layout>
@@ -73,14 +68,28 @@ function App() {
                 </ProtectedRoute>
               </Layout>
             }
-          />
+          /> */}
           <Route
             path="/course"
             element={
               <Layout>
-                <ProtectedRoute>
-                  <Course />
-                </ProtectedRoute>
+                <Course />
+              </Layout>
+            }
+          />
+          <Route
+            path="/resume"
+            element={
+              <Layout>
+                <ResumeForm />
+              </Layout>
+            }
+          />
+          <Route
+            path="/question-generate"
+            element={
+              <Layout>
+                <ResumeQuestionGenerator />
               </Layout>
             }
           />
