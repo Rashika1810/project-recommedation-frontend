@@ -92,6 +92,27 @@ export default function ResumeForm() {
     setter((prev) => prev.filter((_, i) => i !== index));
   };
 
+  const handleDownloadAndRedirect = () => {
+    if (!resumeUrl) return;
+
+    // Trigger the resume download
+    const a = document.createElement("a");
+    a.href = resumeUrl;
+    a.download = "resume.pdf";
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+
+    // Optional: cleanup
+    window.URL.revokeObjectURL(resumeUrl);
+
+    // Close modal and redirect to /question-generate
+    setShowModal(false);
+    setResumeUrl(null);
+
+    // Navigate to the next page and pass resumeUrl (or a flag)
+    navigate("/question-generate");
+  };
   // Validation function
   const validate = () => {
     const newErrors: typeof errors = {};
@@ -948,28 +969,9 @@ export default function ResumeForm() {
           <div className="bg-white rounded-xl p-6 max-w-md text-center shadow-lg space-y-4">
             <h2 className="text-xl font-bold">Resume Ready!</h2>
             <p>Your resume has been generated successfully.</p>
-            <div className="flex gap-2 justify-between flex-wrap">
-              <Button
-                variant="primary"
-                onClick={() => {
-                  const a = document.createElement("a");
-                  a.href = resumeUrl;
-                  a.download = "resume.pdf";
-                  document.body.appendChild(a);
-                  a.click();
-                  a.remove();
-                  window.URL.revokeObjectURL(resumeUrl);
-                  setShowModal(false);
-                  setResumeUrl(null);
-                }}
-              >
+            <div className="flex gap-2 justify-center flex-wrap">
+              <Button variant="primary" onClick={handleDownloadAndRedirect}>
                 Download Resume
-              </Button>
-              <Button
-                variant="secondary"
-                onClick={handleGenerateQuestions} // You need to define this function
-              >
-                Generate Questions
               </Button>
               <Button variant="outline" onClick={() => setShowModal(false)}>
                 Close
