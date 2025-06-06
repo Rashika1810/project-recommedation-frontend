@@ -40,7 +40,7 @@ const Project: React.FC = () => {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          `https://sem-project-ii06.onrender.com/ml_index/${index}`
+          `http://localhost:5000/ml_index/${index}`
         );
         const data = await response.json();
 
